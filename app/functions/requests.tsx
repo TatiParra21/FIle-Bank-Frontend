@@ -1,53 +1,52 @@
 
 
 
-export const signUp =async(email :string, password:string)=>{
+export const signUp =async(email :string, password:string):Promise<string>=>{
     const data = {email, password}
-    try{
          const res = await fetch(`http://localhost:400/file-bank/sign-up`,{method:"POST",
         headers:{
             "Content-type": 'application/json'
         },body: JSON.stringify(data)
     })
     const response = await res.json()
-    console.log(response, "HEW")
-    return response
-    }catch(err){
-        console.log(err, "err")
-    }
-   
+    if(!res.ok)throw new Error(response.error|| "An unknown error occurred")
+    return response.message
 }
-
-export const logIn =async(email :string, password:string)=>{
+export type LogInResponse ={
+    userId:number, email:string
+}
+export const logIn =async(email :string, password:string):Promise<LogInResponse>=>{
     const data = {email,password}
-    try{
          const res = await fetch(`http://localhost:400/file-bank/log-in`,{method:"POST",
         headers:{
             "Content-type": 'application/json'
         },body: JSON.stringify(data)
     })
-    const response = await res.json()
-    if (!res.ok) {
-  console.log("ERROR FROM SERVER:", response.message)
-  throw new Error(response.message)
-}
-    return response
-
-    }catch(err){
-        if(err instanceof Error){
-            console.log(err.name)
-        }
-    }
-   
+    const response = await res.json() 
+    if (!res.ok)throw new Error(response.error || "An unknown error occurred")
+    return response as LogInResponse
 }
 
-const verifyUserNow =async(email :string, password:string)=>{
-   const  res = await fetch(`http://localhost:400/me`)
-   const response = res.json()
-   console.log(response, "respons")
+export const logOut =async():Promise<boolean>=>{
+         const res = await fetch(`http://localhost:400/file-bank/log-out`,{method:"POST",
+        headers:{
+            "Content-type": 'application/json'
+        },
+    })
+    const response = await res.json() 
+    if (!res.ok)throw new Error(response.error || "An unknown error occurred")
+
+    return response.loggedOut as boolean
 }
 
-export const resendVerificationMail =async(email :string, password:string)=>{
+export const verifyUserNow = async (): Promise<LogInResponse> => {
+   const res = await fetch(`http://localhost:400/me`)
+   if (!res.ok) throw new Error("Not authenticated")
+   const response = await res.json()
+   return response as LogInResponse
+}
+
+export const resendVerificationMail =async(email :string, password:string):Promise<string>=>{
     const data = {email,password}
 const res = await fetch(`http://localhost:400/file-bank/resend-verification`,{method:"POST",
         headers:{
@@ -55,6 +54,6 @@ const res = await fetch(`http://localhost:400/file-bank/resend-verification`,{me
         },body: JSON.stringify(data)
     })
     const response = await res.json()
-    console.log(response, "HEW")
-    return response
+    if (!res.ok)throw new Error(response.error || "An unknown error occurred")
+    return response.message
 }

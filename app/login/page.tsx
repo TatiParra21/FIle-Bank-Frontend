@@ -1,9 +1,9 @@
 "use client"
 import { JSX, useState, type SubmitEventHandler } from "react"
-
-import { signUp, logIn,resendVerificationMail } from "./functions/requests"
-export const LoginPage = (): JSX.Element => {
-    
+import { userInfoStore } from "./zustandStore/userInfoStore"
+import { signUp, logIn,resendVerificationMail, LogInResponse } from "./functions/requests"
+ const LoginPage = (): JSX.Element => {
+    const setUserInfo = userInfoStore(state=>state.setUserInfo)
     const [errorMessage, setErrorMessage] = useState<string |null>(null)
     const sendData: SubmitEventHandler<HTMLFormElement> = async(e) => {
         console.log("sent dara")
@@ -15,18 +15,23 @@ export const LoginPage = (): JSX.Element => {
          const action = submitter.value
       try {
     if (action === "signup") {
-         const data = await signUp(email, password)
-        console.log("signup success", data)
-        setErrorMessage(data.message)
+         const message :string= await signUp(email, password)
+            setErrorMessage(message)
+        
     } else if (action === "login") {
-         const data = await logIn(email, password)
-        setErrorMessage(data.message)
+         const data:LogInResponse = await logIn(email, password)
+         setUserInfo(data.userId,data.email)     
         }else if (action === "resend") {
-         const data = await resendVerificationMail(email, password)
-        setErrorMessage(data.message)
+         const data:string = await resendVerificationMail(email, password)
+         setErrorMessage(data)
+        
         }
         }  catch (error) {
-        console.log("request failed", error)
+            if(error instanceof Error){
+                setErrorMessage(error.message)
+            }else{
+                setErrorMessage("Something went wrong")
+            }
   }
     }
     return (
@@ -51,3 +56,4 @@ export const LoginPage = (): JSX.Element => {
     )
    
 }
+export default LoginPage

@@ -1,8 +1,7 @@
-import Image from "next/image";
-import { LoginPage } from "./loginPage";
+import LoginPage from "./login/page"
+const Page =()=>{
 
-export default function Home() {
   return (
-<LoginPage/>
-  );
+    <LoginPage/>
+  )
 }
