@@ -1,7 +1,9 @@
 import LoginPage from "./login/page"
-const Page =()=>{
+ const Page =()=>{
 
   return (
     <LoginPage/>
   )
 }
+
+export default Page
