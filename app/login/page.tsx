@@ -1,7 +1,7 @@
 "use client"
 import { JSX, useState, type SubmitEventHandler } from "react"
-import { userInfoStore } from "./zustandStore/userInfoStore"
-import { signUp, logIn,resendVerificationMail, LogInResponse } from "./functions/requests"
+import { userInfoStore } from "../zustandStore/userInfoStore"
+import { signUp, logIn,resendVerificationMail, LogInResponse } from "../functions/requests"
  const LoginPage = (): JSX.Element => {
     const setUserInfo = userInfoStore(state=>state.setUserInfo)
     const [errorMessage, setErrorMessage] = useState<string |null>(null)
