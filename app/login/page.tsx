@@ -1,12 +1,13 @@
 "use client"
 import { JSX, useState, type SubmitEventHandler } from "react"
-
+import { userInfoStore } from "../zustandStore/userInfoStore"
 import { useRouter } from 'next/navigation'
 import { signUp, logIn,resendVerificationMail, LogInResponse } from "../functions/requests"
  const LoginPage = (): JSX.Element => {
-   
+ 
     const [errorMessage, setErrorMessage] = useState<string |null>(null)
     const router = useRouter()
+    const setUserInfoStore = userInfoStore(state=> state.setUserInfo)
     const sendData: SubmitEventHandler<HTMLFormElement> = async(e) => {
         console.log("sent dara")
         e.preventDefault()
@@ -22,6 +23,7 @@ import { signUp, logIn,resendVerificationMail, LogInResponse } from "../function
         
     } else if (action === "login") {
          const data:LogInResponse = await logIn(email, password)
+         setUserInfoStore(data.userId, data.email)
       console.log(data)    
         router.push('/DashBoard')
         }else if (action === "resend") {

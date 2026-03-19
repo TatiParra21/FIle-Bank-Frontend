@@ -18,6 +18,7 @@ export type LogInResponse ={
 export const logIn =async(email :string, password:string):Promise<LogInResponse>=>{
     const data = {email,password}
          const res = await fetch(`http://localhost:400/file-bank/log-in`,{method:"POST",
+             credentials: "include",
         headers:{
             "Content-type": 'application/json'
         },body: JSON.stringify(data)
@@ -29,6 +30,7 @@ export const logIn =async(email :string, password:string):Promise<LogInResponse>
 
 export const logOut =async():Promise<boolean>=>{
          const res = await fetch(`http://localhost:400/file-bank/log-out`,{method:"POST",
+             credentials: "include",
         headers:{
             "Content-type": 'application/json'
         },
@@ -48,14 +50,15 @@ export const verifyUserNow = async (): Promise<UserType| null> => {
   method: "GET",
   credentials: "include"
 })
-   if (res.status === 401) {
-    return null
-  }
+ const response = await res.json()
+     console.log(response, "response")
+   
 
   if (!res.ok) {
     throw new Error("Something went wrong checking user")
   }
-   const response = await res.json()
+if(!response.authenticated)return null
+  
    return response as UserType
 }
 
