@@ -40,12 +40,18 @@ export const logOut =async():Promise<boolean>=>{
 
     return response.loggedOut as boolean
 }
-export type UserType = {
-    id: number,
-    email: string,
-   
+type UserVerfiedType ={
+    authenticated: boolean,
+    user:{
+        email:string,
+        exp:number,
+        iat:number,
+        userId:number,
+        verified:boolean
+    }
+
 }
-export const verifyUserNow = async (): Promise<UserType| null> => {
+export const verifyUserNow = async (): Promise<UserVerfiedType| null> => {
    const res = await fetch(`http://localhost:400/check-user`,{
   method: "GET",
   credentials: "include"
@@ -59,7 +65,7 @@ export const verifyUserNow = async (): Promise<UserType| null> => {
   }
 if(!response.authenticated)return null
   
-   return response as UserType
+   return response as UserVerfiedType
 }
 
 export const resendVerificationMail =async(email :string, password:string):Promise<string>=>{

@@ -9,7 +9,7 @@ export type UserInfo ={
 
 export type UserInfoStoreType = UserInfo & {
 resetUserInfo: ()=> void,
-setUserInfo: (id:number, email:string)=>void
+setUserInfo: (user:UserInfo)=>void
 getUserInfo: ()=>{id:number|null,email:string}
 
 }
@@ -17,7 +17,7 @@ export const userInfoStore = create<UserInfoStoreType>((set,get)=>({
     id: null,
     email:"",
     resetUserInfo: ()=> set({id:null,email:""}),
-    setUserInfo: (id:number,email:string) => set({id:id, email:email}),
+    setUserInfo: (user:UserInfo) => set({id:user.id, email:user.email}),
     getUserInfo:()=>{
         const state = get()
         return{id:state.id, email:state.email}

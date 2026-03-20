@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import { Navigation } from "./Components/Navigation";
 import { config } from '@fortawesome/fontawesome-svg-core' 
 import '@fortawesome/fontawesome-svg-core/styles.css' 
 config.autoAddCss = false
@@ -28,7 +28,10 @@ export default function RootLayout({children}: Readonly<{
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthContext>
+          <Navigation>
+
           {children}
+          </Navigation>
         </AuthContext>
       </body>
     </html>
