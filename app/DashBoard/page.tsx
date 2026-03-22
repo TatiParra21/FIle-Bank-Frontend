@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
 <section className="bg-[#E7F1EF] h-screen">
-    HELLo
+   <h2>Current Files</h2>
 
 
 </section>

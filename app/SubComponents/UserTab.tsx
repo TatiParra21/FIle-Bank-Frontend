@@ -29,7 +29,7 @@ return(
 
         <div>
        <FontAwesomeIcon onClick={toggleSetShow} icon={faUser} className="text-red-500" />
-        <p>{email}</p>
+        <p className="text-lg">{email}</p>
         </div>  
     <button className="px-4 py-2 mt-2 rounded-md bg-[#173631] text-[#FEEA16]" onClick={logOutAccount}>Log out?</button>
     
